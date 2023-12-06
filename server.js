@@ -32,7 +32,7 @@ app.use('/api/user', userApi);
 // })
 
 
-const MONGO_CONNECTION_STRING = 'mongodb+srv://hunter:banana2@seawebdevfall2021.ykjok.mongodb.net/?retryWrites=true&w=majority'
+const MONGO_CONNECTION_STRING = 'UPDATE MONGODB CONNECTION STRING HERE'
 
 mongoose.connect(MONGO_CONNECTION_STRING, { useNewUrlParser: true });
 const db = mongoose.connection;
