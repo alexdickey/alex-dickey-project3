@@ -11,7 +11,7 @@ function PokemonDetails() {
   const pokemonID = params.pokemonID;
 
   async function getPokemonDetails() {
-    const response = await axios.get('http://localhost:3500/api/pokemon/' + pokemonID)
+    const response = await axios.get('/api/pokemon/' + pokemonID)
 
     setPokemonDetailState(response.data);
   }

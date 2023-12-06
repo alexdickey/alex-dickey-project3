@@ -2,20 +2,31 @@ import { useState, useEffect } from 'react'
 import axios from 'axios';
 
 import './App.css'
+import { useNavigate } from 'react-router';
 
 function App() {
+  const navigate = useNavigate()
+
   const [pokemonListState, setPokemonListState] = useState([]);
   const [insertPokemonName, setInsertPokemonName] = useState('');
   const [insertPokemonOwner, setInsertPokemonOwner] = useState('');
+  const [userName, setUsername] = useState('');
 
   async function getAllPokemon() {
-    const response = await axios.get('http://localhost:3500/api/pokemon/all')
+    const response = await axios.get('/api/pokemon/all')
 
     setPokemonListState(response.data);
   }
 
+  async function getUsername() {
+    const response = await axios.get('/api/user/isLoggedIn')
 
-  useEffect(function() {
+    if(response.data.username) {
+      setUsername(response.data.username)
+    }
+  }
+
+  useEffect( function() {
     // console.log("I am the first line")
     // axios.get('http://localhost:3500/api/pokemon/all')
     //   .then(function(response) {
@@ -26,8 +37,8 @@ function App() {
     //   })
     //   console.log("I am the third line")
 
-
-    getAllPokemon();
+     getUsername();
+     getAllPokemon();
   }, []);
 
   const pokemonComponent = [];
@@ -54,7 +65,7 @@ function App() {
       owner: insertPokemonOwner,
     };
 
-    await axios.post('http://localhost:3500/api/pokemon', newPokemon);
+    await axios.post('/api/pokemon', newPokemon);
 
     await getAllPokemon();
 
@@ -65,11 +76,23 @@ function App() {
 
   function onInsertPokemonClick() {
     insertNewPokemon();
+  }
 
+  async function logOut() {
+    axios.post('/api/user/logout', {})
+
+    navigate('/login')
+  }
+
+  let usernameMessage = <div>Loading...</div>
+  if(userName) {
+    usernameMessage = <div>Logged in as {userName}</div>
   }
 
   return (
     <div>
+      {usernameMessage}
+      <div><button onClick={logOut}>Logout</button></div>
 
       <div>{pokemonComponent}</div>
       <div>
@@ -79,6 +102,7 @@ function App() {
         <div>Owner: </div>
         <input onInput={updatePokemonOwner} value={insertPokemonOwner} />
         <div><button onClick={onInsertPokemonClick}>Insert Pokemon</button></div>
+        <div></div>
       </div>
     </div>
 

@@ -11,10 +11,18 @@ const pokemonDB = [
 ]
 
 router.post('/', async function(request, response) {
+    const username = request.cookies.username
+    
+    if(!username) {
+        response.status(400)
+        return response.send("Users need to be logged in to create a new pokemon")
+    }
+
     const body = request.body;
     const pokemonName = body.name;
-    const owner = body.owner;
-    if(!owner || !pokemonName) {
+    const owner = username;
+
+    if(!pokemonName) {
         response.status(400);
         return response.send("Missing pokemon name or owner")
     }
@@ -28,7 +36,7 @@ router.post('/', async function(request, response) {
 
     const createdPokemon = await PokemonAccessor.insertPokemon(newPokemon)
 
-    response.json("Successfully created Pokemon" + createdPokemon);
+    response.json(createdPokemon);
 
     // const body = request.body;
     // const pokemonName = body.name;
@@ -54,21 +62,26 @@ router.post('/', async function(request, response) {
 // /api/pokemon/all?owner=hunter ==> return all pokemon owned by me
 router.get('/all', async function(req, response) {
 
-    // request.query = {owner: 'yuchen'}
-    const ownerQuery = req.query.owner;
-    // const healthQuery = Number(req.query.health);
+    const username = req.cookies.username
 
-    // let pokemonResponse = pokemonDB;
+    // // request.query = {owner: 'yuchen'}
+    // const ownerQuery = req.query.owner;
+    // // const healthQuery = Number(req.query.health);
+
+    // // let pokemonResponse = pokemonDB;
 
     
 
-    if(ownerQuery) {
-        const foundPokemon = await PokemonAccessor.findPokemonByOwner(ownerQuery);
+    if(username) {
+        const foundPokemon = await PokemonAccessor.findPokemonByOwner(username);
         return response.json(foundPokemon);
+    } else {
+        response.status(400);
+        return response.send("Cannot get Pokemon when logged out :(")
     }
 
-    const allPokemon = await PokemonAccessor.getAllPokemon();
-   return  response.json(allPokemon);
+//     const allPokemon = await PokemonAccessor.getAllPokemon();
+//    return  response.json(allPokemon);
  
     // if(healthQuery) {
     //     const response = [];
