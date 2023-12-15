@@ -1,3 +1,5 @@
+const { PokemonSchema } = require('./pokemon.schema');
+
 const Schema = require('mongoose').Schema;
 
 exports.UserSchema = new Schema({
@@ -10,6 +12,10 @@ exports.UserSchema = new Schema({
         type: Date,
         default: Date.now,
     },
+    description: {
+        type: String,
+        default: "Welcome to my Page!"
+    }
 }, { collection : 'userTable' });
 
 //Date.now()

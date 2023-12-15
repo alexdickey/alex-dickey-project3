@@ -11,8 +11,17 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  max-width: 100vw;
 }
-
+.main-container {
+  width: 100%; 
+  height: 100vh; /* Set the container to take up the full viewport height */
+  display: flex;
+  flex-direction: column;
+  /* top: 0;
+  left: 0; */
+  /* overflow-x: hidden; */
+}
 a {
   font-weight: 500;
   color: #646cff;
@@ -22,13 +31,14 @@ a:hover {
   color: #535bf2;
 }
 
-body {
+/* body {
   margin: 0;
   display: flex;
-  place-items: center;
+  place-items: center ;
   min-width: 320px;
+  width: 100vw;
   min-height: 100vh;
-}
+}  */
 
 h1 {
   font-size: 3.2em;

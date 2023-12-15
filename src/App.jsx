@@ -1,21 +1,21 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom';
 import axios from 'axios';
+import NavBar from './NavBar';
 
 import './App.css'
 import { useNavigate } from 'react-router';
 
 function App() {
   const navigate = useNavigate()
-
-  const [pokemonListState, setPokemonListState] = useState([]);
-  const [insertPokemonName, setInsertPokemonName] = useState('');
-  const [insertPokemonOwner, setInsertPokemonOwner] = useState('');
+  const [statusUpdatesListState, setStatusUpdatesListState] = useState([]);
+  const [statusUpdateContent, setStatusUpdateContent] = useState('');
   const [userName, setUsername] = useState('');
+  const [ableToPost, setAbleToPost] = useState(false)
 
-  async function getAllPokemon() {
-    const response = await axios.get('/api/pokemon/all')
-
-    setPokemonListState(response.data);
+  async function getAllStatusUpdates() {
+    const response = await axios.get('/api/statusUpdates/all')
+    setStatusUpdatesListState(response.data);
   }
 
   async function getUsername() {
@@ -23,89 +23,124 @@ function App() {
 
     if(response.data.username) {
       setUsername(response.data.username)
+      setAbleToPost(true)
     }
   }
 
-  useEffect( function() {
-    // console.log("I am the first line")
-    // axios.get('http://localhost:3500/api/pokemon/all')
-    //   .then(function(response) {
-    //     console.log("I am the second line")
-    //     const data = response.data;
-
-    //     setPokemonListState(response.data);
-    //   })
-    //   console.log("I am the third line")
-
-     getUsername();
-     getAllPokemon();
-  }, []);
-
-  const pokemonComponent = [];
-
-  for(let i = 0; i < pokemonListState.length; i++) {
-    const currentPokemonValue = pokemonListState[i];
-
-    pokemonComponent.push(<div>
-      {currentPokemonValue.name} - Health: {currentPokemonValue.health}
-    </div>)
-  }  
-
-  function updatePokemonName(event) {
-    setInsertPokemonName(event.target.value);
+  async function navigateToSelectedUser(event) {
+    const username = event.target.textContent.trim();
+    console.log(username)
+    navigate('/user/' + username)
   }
 
-  function updatePokemonOwner(event) {
-    setInsertPokemonOwner(event.target.value);
+  function displayEditDeleteButton(match, postID) {
+    if(match){
+      return( <button className='status-update-edit-button' onClick={()=>editStatusUpdateContent(postID)}> ✏️ </button> )
+    }
   }
 
-  async function insertNewPokemon() {
-    const newPokemon = {
-      name: insertPokemonName,
-      owner: insertPokemonOwner,
-    };
+  function editStatusUpdateContent(postID){
+    navigate('/statusUpdate/edit/'+ postID)
+  } 
 
-    await axios.post('/api/pokemon', newPokemon);
 
-    await getAllPokemon();
+  const statusUpdatesComponent = [];
 
-    setInsertPokemonName('')
-    setInsertPokemonOwner('')
+  for(let i = 0; i < statusUpdatesListState.length; i++) {
+    const currentStatusUpdate = statusUpdatesListState[i];
 
+    let editDeleteOption = false;
+    if (currentStatusUpdate.owner == userName) {
+      editDeleteOption = true;
+    }
+    // to={`/user/${currentUsername}`}
+
+    statusUpdatesComponent.push(
+      <div className='status-update-box'>
+        <div className='status-update-header'>
+          <button className='status-update-username' onClick={navigateToSelectedUser}>
+            {currentStatusUpdate.owner}          
+          </button> 
+          <span className='status-update-meta'> Created: {getPostTimeCreated(currentStatusUpdate)} </span> 
+          <span className='status-update-edit-button'>
+            {displayEditDeleteButton(editDeleteOption, currentStatusUpdate._id)}
+          </span>
+        </div>
+        <div className='status-update-separator'/>
+        <div className='status-update-content'>
+          {currentStatusUpdate.content}
+        </div>
+      </div>
+    )
   }
 
-  function onInsertPokemonClick() {
-    insertNewPokemon();
+  statusUpdatesComponent.reverse()
+
+  function updateStatusUpdate(event) {
+    console.log("adding" + event)
+    setStatusUpdateContent(event.target.value);
+  }
+
+  function getPostTimeCreated(post){
+    const timestamp = post.timeCreated
+    const dateObject = new Date(timestamp);
+    const formattedDate = dateObject.toLocaleString();
+    return formattedDate;
+  }
+
+  async function insertNewStatusUpdate() {
+    const newStatusUpdate= {
+      owner: {userName}, 
+      content: statusUpdateContent,
+    }
+
+    await axios.post('/api/statusUpdates', newStatusUpdate);
+    await getAllStatusUpdates();
+
+    setStatusUpdateContent('')
+  }
+
+  function onClickPostStatusUpdate() {
+    insertNewStatusUpdate();
   }
 
   async function logOut() {
     axios.post('/api/user/logout', {})
-
     navigate('/login')
   }
+  async function Register() {
+    axios.post('/api/user/register', {})
+    navigate('/register')
+  }
 
-  let usernameMessage = <div>Loading...</div>
-  if(userName) {
-    usernameMessage = <div>Logged in as {userName}</div>
+  useEffect( function() {
+    getUsername();
+    getAllStatusUpdates();
+ }, []);
+
+  let usernameMessage = <div>Create an account or Login to start posting</div>
+  if (userName) { 
+    usernameMessage = <div>Welcome, {userName}! Create a post here:</div> 
   }
 
   return (
     <div>
-      {usernameMessage}
-      <div><button onClick={logOut}>Logout</button></div>
-
-      <div>{pokemonComponent}</div>
-      <div>
-        <h6>Add new Pokemone</h6>
-        <div>Name: </div>
-        <input onInput={updatePokemonName} value={insertPokemonName} />
-        <div>Owner: </div>
-        <input onInput={updatePokemonOwner} value={insertPokemonOwner} />
-        <div><button onClick={onInsertPokemonClick}>Insert Pokemon</button></div>
-        <div></div>
+      <NavBar />
+      <p></p>
+      <div className='welcome-message'>{usernameMessage}</div>
+      {ableToPost && (
+        <div className="create-new-post-container">
+        <textarea onInput={updateStatusUpdate} value={statusUpdateContent} placeholder="Type your post here..." rows='4' className='post-input'/>
+        <button className='post-button' onClick={onClickPostStatusUpdate}>Post Status</button>
       </div>
+      )}
+      <div>
+          <div className='status-update-display-all-container'>
+            <h2>Previous Posts</h2>
+            {statusUpdatesComponent}
+          </div>
+      </div>      
     </div>
-
   )
 }
 

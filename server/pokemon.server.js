@@ -3,7 +3,6 @@ const router = express.Router();
 
 const PokemonAccessor = require('./db/pokemon.model');
 
-
 const pokemonDB = [
     {name: "Charizard", health: 100, id: 1, owner: 'Hunter'},
     {name: "Salamder", health: 75, id: 2, owner: 'Hunter'},

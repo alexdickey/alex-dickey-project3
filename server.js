@@ -2,6 +2,7 @@ const express = require('express');
 const helper = require('./server/helper')
 const pokemonApi = require('./server/pokemon.server')
 const userApi = require('./server/user.server');
+const statusUpdatesApi = require('./server/statusUpdates.server');
 const cors = require('cors')
 const mongoose = require('mongoose');
 const path = require('path')
@@ -18,10 +19,11 @@ app.use(cookieParser());
 
 app.use('/api/pokemon', pokemonApi);
 app.use('/api/user', userApi);
+app.use('/api/statusUpdates', statusUpdatesApi);
 
-// app.get('/', function(request, response) {
-//     response.send(helper.generateRandomResponse())
-// })
+app.get('/', function(request, response) {
+    response.send(helper.generateRandomResponse())
+})
 
 // app.get('/', function(request, response) {
 //     response.send("This is the second app GET request");
@@ -32,7 +34,7 @@ app.use('/api/user', userApi);
 // })
 
 
-const MONGO_CONNECTION_STRING = 'UPDATE MONGODB CONNECTION STRING HERE'
+const MONGO_CONNECTION_STRING = "mongodb+srv://dickeya:Ember123@seawebdev.0e5on0q.mongodb.net/?retryWrites=true&w=majority"
 
 mongoose.connect(MONGO_CONNECTION_STRING, { useNewUrlParser: true });
 const db = mongoose.connection;

@@ -5,43 +5,48 @@ import NavBar from './NavBar';
 import './App.css'
 
 
-export default function Login() {
 
-    const [loginFormState, setLoginFormState] = useState({});
+export default function Register() {
+
+    const [registrationFormState, setRegistrationFormState] = useState({});
     const [errorDetailsState, setErrorDetailsState] = useState('');
     const navigate = useNavigate();
 
     function updateUserNameInState(event) {
         const username = event.target.value;
 
-        const newLoginFormState = {
-            password: loginFormState.password,
+        const newRegistrationFormState = {
+            password: registrationFormState.password,
             username: username,
         }
 
-        setLoginFormState(newLoginFormState)
+        setRegistrationFormState(newRegistrationFormState)
     }
     
     function updatePasswordInState(event) {
         const password = event.target.value;
 
-        const newLoginFormState = {
-            username: loginFormState.username,
+        const newRegistrationFormState = {
+            username: registrationFormState.username,
             password: password,
         }
 
-        setLoginFormState(newLoginFormState)
+        setRegistrationFormState(newRegistrationFormState)
     }
 
-    async function submitLogin() {
+    async function submitRegistration() {
         try {
-            const response = await axios.post('/api/user/login', loginFormState)
+            // create a post/put request to 
+            //      1. check if the username is valid // already exists
+            //      2. create the user in the database
+            const response = await axios.post('/api/user/register', registrationFormState)
+            // navigate the the home page
             navigate('/')    
         } catch (err) {
-            setErrorDetailsState("Issue logging in, please try again :)")
+            setErrorDetailsState("Issue Registering User: Username Already Taken")
         }
-
     }
+
     function goHome() {
         navigate('/')
     }
@@ -50,22 +55,28 @@ export default function Login() {
     if(errorDetailsState) {
         errorMessage = <div>{errorDetailsState}</div>
     }
+    function goHome() {
+    navigate('/')
+  }
 
     return <div>
       <NavBar />
       <div className="login-register-container">
-        <h1> Login Here </h1>
+        <h1> Create a New Account </h1>
+        <div>
+            {errorMessage}
+        </div>
+        <p></p>
         <div>Username:</div>
         <input type='text' onInput={updateUserNameInState} />
         <div>Password:</div>
         <input type='password' onInput={updatePasswordInState} />
         <div>
-            <button onClick={submitLogin}>Login</button>
+            <button onClick={submitRegistration}>Register</button>
         </div>
-        <div>
-            {errorMessage}
+        
+        
         </div>
-      </div>
 
     </div>
 }

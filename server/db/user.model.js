@@ -12,10 +12,9 @@ function getUserByUsername(username) {
     return UserModel.findOne({username: username}).exec();
 }
 
-// User1 - p: 1234 - createdDate: 12/05
-// User2 - p: 2345 - createdDate: 12/05
-// User3 - p: 3456 - createdDate: 12/01
-// UserModel.find({p: 1234, createdDate: '12/05'}).exec()
+// function updateUserDescription(username, description) {
+//     return UserModel.apply(username, description)
+// }
 
 module.exports = {
     insertUser,
