@@ -36,7 +36,6 @@ export default function Register() {
 
     async function submitRegistration() {
         try {
-
             const response = await axios.post('/api/user/register', registrationFormState)
             navigate('/')    
         } catch (err) {
