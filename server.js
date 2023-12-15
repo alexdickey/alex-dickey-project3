@@ -23,7 +23,8 @@ app.get('/', function(request, response) {
 })
 
 
-const MONGO_CONNECTION_STRING = "mongodb+srv://dickeya:Ember123@seawebdev.0e5on0q.mongodb.net/?retryWrites=true&w=majority"
+// const MONGO_CONNECTION_STRING = "mongodb+srv://dickeya:Ember123@seawebdev.0e5on0q.mongodb.net/?retryWrites=true&w=majority"
+const MONGO_CONNECTION_STRING = process.env.MONGO || 'mongodb://127.0.0.1/SeaWebDev';
 
 mongoose.connect(MONGO_CONNECTION_STRING, { useNewUrlParser: true });
 const db = mongoose.connection;
@@ -33,7 +34,7 @@ db.on('error', console.error.bind(console, 'Error connecting to MongoDB:'));
 let frontend_dir = path.join(__dirname, 'dist')
 
 app.use(express.static(frontend_dir));
-app.get('*', function (req, res) {
+app.get('/*', function (req, res) {
     console.log("received request");
     res.sendFile(path.join(frontend_dir, "index.html"));
 });
