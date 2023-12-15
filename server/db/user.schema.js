@@ -1,5 +1,3 @@
-const { PokemonSchema } = require('./pokemon.schema');
-
 const Schema = require('mongoose').Schema;
 
 exports.UserSchema = new Schema({

@@ -1,6 +1,5 @@
 const express = require('express');
 const helper = require('./server/helper')
-const pokemonApi = require('./server/pokemon.server')
 const userApi = require('./server/user.server');
 const statusUpdatesApi = require('./server/statusUpdates.server');
 const cors = require('cors')
@@ -16,22 +15,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-
-// app.use('/api/pokemon', pokemonApi);
 app.use('/api/user', userApi);
 app.use('/api/statusUpdates', statusUpdatesApi);
 
 app.get('/', function(request, response) {
     response.send(helper.generateRandomResponse())
 })
-
-// app.get('/', function(request, response) {
-//     response.send("This is the second app GET request");
-// })
-
-// app.post('/', function(requst, response) {
-//     response.send("This is a POST request")
-// })
 
 
 const MONGO_CONNECTION_STRING = "mongodb+srv://dickeya:Ember123@seawebdev.0e5on0q.mongodb.net/?retryWrites=true&w=majority"
@@ -53,17 +42,3 @@ app.get('*', function (req, res) {
 app.listen(process.env.PORT || 3500, function() {
     console.log("Starting server now...")
 })
-
-//const http = require('http');
-
-// const server = http.createServer(function (request, response) {
-//     response.writeHead(200, { 'Content-Type': 'text/plain' })
-
-//     response.end("Hello, my name is Hunter")
-
-
-// })
-
-// server.listen(3500, "127.0.0.1", function() {
-//     console.log('Starting...')
-// })
