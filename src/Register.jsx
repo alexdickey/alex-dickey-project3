@@ -36,11 +36,8 @@ export default function Register() {
 
     async function submitRegistration() {
         try {
-            // create a post/put request to 
-            //      1. check if the username is valid // already exists
-            //      2. create the user in the database
+
             const response = await axios.post('/api/user/register', registrationFormState)
-            // navigate the the home page
             navigate('/')    
         } catch (err) {
             setErrorDetailsState("Issue Registering User: Username Already Taken")

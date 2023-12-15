@@ -75,12 +75,6 @@ function StatusUpdateDetails() {
     setUseMessage('');
   }, []);
 
-
-
-  // if(!pokemonDetailState) {
-  //   return (<div>Loading...</div>)
-  // }
-
   if(!statusUpdateDetailsState) { return (<div>Loading...</div>) }
   return (
     <div>

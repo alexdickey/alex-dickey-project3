@@ -9,7 +9,6 @@ import {
   Route,
 } from "react-router-dom";
 
-import PokemonDetails from './PokemonDetails.jsx';
 import StatusUpdateDetails from './StatusUpdateDetails.jsx';
 import Login from './Login.jsx';
 import Register from './Register.jsx';
@@ -20,10 +19,6 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-  },
-  {
-    path: '/pokemon/:pokemonID',
-    element: <PokemonDetails />
   },
   {
     path: '/login',

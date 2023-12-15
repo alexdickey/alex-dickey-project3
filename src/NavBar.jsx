@@ -4,15 +4,11 @@ import './App.css'
 import { useNavigate } from 'react-router';
 import axios from 'axios';
 
-
-
-
 const NavBar = () => {
   const navigate = useNavigate()
-  const [isLoggedIn, setLoggedIn] = useState(false); // Use your actual login state here
-  const [currentUsername, setCurrentUsername] = useState(''); // Use your actual username state here
+  const [isLoggedIn, setLoggedIn] = useState(false); 
+  const [currentUsername, setCurrentUsername] = useState(''); 
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-//   const history = useHistory();
 
 async function getUsername() {
     const response = await axios.get('/api/user/isLoggedIn')
@@ -38,7 +34,6 @@ async function getUsername() {
 
   async function logOut() {
     await axios.post('/api/user/logout', {})
-    // getUsername()
     navigate('/login')
   }
   async function goToUserPage() {

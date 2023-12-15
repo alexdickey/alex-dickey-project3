@@ -8,17 +8,14 @@ import { useNavigate } from "react-router";
 
 
 function UserDetails() {
-    // This is going to know their username, time created, and all of the status' that the user has created
   const [userDetailState, setUserDetailState] = useState(null);
   const [usersStatusUpdatesList, setUsersStatusUpdatesList] = useState([]);
-  // const [userDescription, setUserDescription] = useState('');
   const [currentUser, setCurrentUser] = useState('');
   const navigate = useNavigate();
 
 
   const params = useParams();
   const username = params.username;
-  // const description = params.description;
 
   async function getCurrentUser() {
     const response = await axios.get('/api/user/isLoggedIn')
@@ -78,12 +75,6 @@ function UserDetails() {
           {currentStatusUpdate.content}
         </div>
       </div>
-    // <div className='status-update-box'>
-    //   {currentStatusUpdate.owner}- Created: {currentStatusUpdate.timeCreated} {displayEditDeleteButton(editDeleteOption, currentStatusUpdate._id)}
-    //   <p>
-    //     {currentStatusUpdate.content}
-    //   </p>
-    // </div>)
     )
   }
 
@@ -120,7 +111,6 @@ function UserDetails() {
 
         <h1> {userDetailState.username} </h1>
         <div className='profile-info'>
-          {/* <div className='profile-username'>{userDetailState.username}</div> */}
           <div className='profile-joined'>Member since: {getUserDateJoined()}</div>
         </div>
 

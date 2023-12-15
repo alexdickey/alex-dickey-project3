@@ -53,7 +53,6 @@ function App() {
     if (currentStatusUpdate.owner == userName) {
       editDeleteOption = true;
     }
-    // to={`/user/${currentUsername}`}
 
     statusUpdatesComponent.push(
       <div className='status-update-box'>
