@@ -15,8 +15,6 @@ async function getUsername() {
     if(response.data.username) {
         setLoggedIn(true)
         setCurrentUsername(response.data.username)
-        console.log("Navbar: isLoggedIn = "+isLoggedIn)
-        console.log("Navbar: currentUsername = "+currentUsername)
     }
   }
 
@@ -42,7 +40,6 @@ async function getUsername() {
   }
 
   const toggleDropdown = () => {
-    console.log('Toggling dropdown - ' + isDropdownOpen)
     setDropdownOpen(!isDropdownOpen);
   };
 

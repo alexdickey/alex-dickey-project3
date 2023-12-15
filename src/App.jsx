@@ -29,7 +29,6 @@ function App() {
 
   async function navigateToSelectedUser(event) {
     const username = event.target.textContent.trim();
-    console.log(username)
     navigate('/user/' + username)
   }
 
@@ -76,7 +75,6 @@ function App() {
   statusUpdatesComponent.reverse()
 
   function updateStatusUpdate(event) {
-    console.log("adding" + event)
     setStatusUpdateContent(event.target.value);
   }
 
